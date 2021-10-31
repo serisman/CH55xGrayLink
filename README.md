@@ -19,7 +19,11 @@ Connect the following pins to the 2.5mm port located at the bottom of the TI cal
 Max reported transfer speed seems to be about 2.9 KB/s based on testing done to date.
 
 ## Arduino Settings
-Adjust *Port* as needed.  May need to use Device Manager to force the port to COM1-4 for TI programs to see it.
+First, install Ch55xduino according to the instruction found here: https://github.com/DeqingSun/ch55xduino#installation
+
+Then, select the CH551 Board (or CH552 Board) and adjust the other settings to match below.
+
+Adjust *Port* as needed.  May need to use Device Manager to force the port to COM1-4 for TI programs to actually see it.
 
 ![arduino_settings](images/arduino_settings.png)
 
