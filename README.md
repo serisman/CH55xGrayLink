@@ -22,3 +22,23 @@ Max reported transfer speed seems to be about 2.9 KB/s based on testing done to 
 Adjust *Port* as needed.  May need to use Device Manager to force the port to COM1-4 for TI programs to see it.
 
 ![arduino_settings](images/arduino_settings.png)
+
+## Schematic
+
+![Schematic](pcb/output/Schematic.png)
+
+## PCB
+Designed to fit within a standard USB-A male port housing.
+
+Gerbers: `pcb/output/gerber.zip`
+
+PCBs available from: [OSHPARK](https://oshpark.com/shared_projects/HASfmay6)
+
+![Top](pcb/output/Top.png)
+![Bottom](pcb/output/Bottom.png)
+
+## Finished Cable
+Note: This is picturing an older PCB (from a different project), but the optimized PCB available above is basically the same thing.
+
+![Finished Cable](images/finished_cable.jpg)
+![Finished PCB Bottom](images/finished_pcb_bottom.jpg)
