@@ -7,7 +7,7 @@ It is a port of the *serial2ti83* Arduino sketch for Arduino Nano/Uno found [her
 In order to use it, compile and upload `CH55xGrayLink.ino` to a CH551 or CH552 [Ch55xduino](https://github.com/DeqingSun/ch55xduino) board using the Arduino IDE.
 
 ```
-Sketch uses 4705 bytes (45%) of program storage space. Maximum is 10240 bytes.
+Sketch uses 4254 bytes (41%) of program storage space. Maximum is 10240 bytes.
 Global variables use 59 bytes (16%) of dynamic memory, leaving 305 bytes for local variables. Maximum is 364 bytes.
 ```
 
@@ -21,7 +21,7 @@ Connect the following pins to the 2.5mm port located at the bottom of the TI cal
 | sleeve        | GND           |
 
 ## Transfer Speed
-Max reported transfer speed seems to be about 2.9 KB/s based on testing done to date.
+Max reported transfer speed seems to be about 3.2 KB/s based on testing done to date (TI-83 Plus).
 
 ## Arduino Settings
 First, install Ch55xduino according to the instruction found here: https://github.com/DeqingSun/ch55xduino#installation

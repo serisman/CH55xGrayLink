@@ -1,7 +1,7 @@
 /* Ch55xGrayLink:
  *  A modern yet simple TI Graph-Link cable ported to Ch55xduino for CH551/CH552 MCUs
  *  Ch55xduino: (https://github.com/DeqingSun/ch55xduino)
- *  Max transfer speed: about 2.3-2.9 KB/s
+ *  Max transfer speed: about 3.2 KB/s (TI-83 Plus)
  *
  *  https://github.com/serisman/Ch55xGrayLink
  *  Copyright (C) 2021 serisman <github@serisman.com>
@@ -14,8 +14,8 @@
  *   https://github.com/jw0k/serial2ti83 (Copyright (C) 2017 jw0k)
  */
 
-#define TXTIMEOUT   1000UL
-#define RXTIMEOUT   1000UL
+#define TXTIMEOUT   65000UL
+#define RXTIMEOUT   65000UL
 
 #define PIN_TIP       P1_4
 #define PIN_RING      P1_7
@@ -43,16 +43,16 @@ void TI_setup() {
 }
 
 void TI_sendByte(uint8_t byte) {
-  unsigned long currentTime;
+  unsigned int timeout;
 
   for (char i = 0; i < 8; ++i) {
     bool bit = byte & 0x01;
     byte >>= 1;
 
     // Poll both lines until they are both high, which means we're ready to send a bit
-    currentTime = millis();
+    timeout = TXTIMEOUT;
     while (TI_isTipLow() || TI_isRingLow()) {
-      if (millis() - currentTime > TXTIMEOUT) {
+      if (--timeout == 0) {
         return;
       }
     }
@@ -62,9 +62,9 @@ void TI_sendByte(uint8_t byte) {
       TI_pullRingLow();
 
       // Wait for opposite line to become low
-      currentTime = millis();
+      timeout = TXTIMEOUT;
       while (TI_isTipHigh()) {
-        if (millis() - currentTime > TXTIMEOUT) {
+        if (--timeout == 0) {
           TI_releaseRing();
           return;
         }
@@ -74,9 +74,9 @@ void TI_sendByte(uint8_t byte) {
       TI_releaseRing();
 
       // wait for opposite line to become high
-      currentTime = millis();
+      timeout = TXTIMEOUT;
       while (TI_isTipLow()) {
-        if (millis() - currentTime > TXTIMEOUT) {
+        if (--timeout == 0) {
           return;
         }
       }
@@ -85,9 +85,9 @@ void TI_sendByte(uint8_t byte) {
       TI_pullTipLow();
 
       // Wait for opposite line to become low
-      currentTime = millis();
+      timeout = TXTIMEOUT;
       while (TI_isRingHigh()) {
-        if (millis() - currentTime > TXTIMEOUT) {
+        if (--timeout == 0) {
           TI_releaseTip();
           return;
         }
@@ -97,9 +97,9 @@ void TI_sendByte(uint8_t byte) {
       TI_releaseTip();
 
       // Wait for opposite line to become high
-      currentTime = millis();
+      timeout = TXTIMEOUT;
       while (TI_isRingLow()) {
-        if (millis() - currentTime > TXTIMEOUT) {
+        if (--timeout == 0) {
           return;
         }
       }
@@ -108,16 +108,19 @@ void TI_sendByte(uint8_t byte) {
 }
 
 bool TI_getByte(uint8_t * byte) {
-  // Only enter if a pin is low, otherwise you always get the timeout
-  if (TI_isRingHigh() && TI_isTipHigh()) return false;
+  // Return immediately if TI isn't trying to send us a byte (i.e. bus is idle)
+  if (TI_isRingHigh() && TI_isTipHigh()) {
+    return false;
+  }
 
-  unsigned long currentTime;
   uint8_t result = 0;
+  unsigned int timeout;
+
   for (char i = 0; i < 8; ++i) {
     // Poll both lines until one of them becomes low
-    currentTime = millis();
+    timeout = RXTIMEOUT;
     while (TI_isRingHigh() && TI_isTipHigh()) {
-      if (millis() - currentTime > RXTIMEOUT) {
+      if (--timeout == 0) {
         return false;
       }
     }
@@ -132,9 +135,9 @@ bool TI_getByte(uint8_t * byte) {
       TI_pullTipLow();
 
       // Wait for opposite line to become high
-      currentTime = millis();
+      timeout = RXTIMEOUT;
       while (TI_isRingLow()) {
-        if (millis() - currentTime > RXTIMEOUT) {
+        if (--timeout == 0) {
           TI_releaseTip();
           return false;
         }
@@ -147,8 +150,9 @@ bool TI_getByte(uint8_t * byte) {
       TI_pullRingLow();
 
       // Wait for opposite line to become high
+      timeout = RXTIMEOUT;
       while (TI_isTipLow()) {
-        if (millis() - currentTime > RXTIMEOUT) {
+        if (--timeout == 0) {
           TI_releaseRing();
           return false;
         }
@@ -159,9 +163,9 @@ bool TI_getByte(uint8_t * byte) {
     }
 
     // Wait for both lines stable high
-    currentTime = millis();
+    timeout = RXTIMEOUT;
     while (TI_isTipLow() || TI_isRingLow()) {
-      if (millis() - currentTime > RXTIMEOUT) {
+      if (--timeout == 0) {
         return false;
       }
     }
@@ -173,7 +177,6 @@ bool TI_getByte(uint8_t * byte) {
 
 void setup() {
   // No need to init USBSerial
-
   TI_setup();
 }
 
