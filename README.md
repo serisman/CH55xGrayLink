@@ -6,6 +6,11 @@ This sketch allows a computer to connect to and transfer data to/from a TI graph
 It is a port of the *serial2ti83* Arduino sketch for Arduino Nano/Uno found [here](https://github.com/MTres19/serial2ti83).
 In order to use it, compile and upload `CH55xGrayLink.ino` to a CH551 or CH552 [Ch55xduino](https://github.com/DeqingSun/ch55xduino) board using the Arduino IDE.
 
+```
+Sketch uses 4705 bytes (45%) of program storage space. Maximum is 10240 bytes.
+Global variables use 59 bytes (16%) of dynamic memory, leaving 305 bytes for local variables. Maximum is 364 bytes.
+```
+
 ## Wiring
 Connect the following pins to the 2.5mm port located at the bottom of the TI calculator according to the following table:
 
