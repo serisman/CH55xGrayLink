@@ -1,3 +1,10 @@
+Not a really meaning full PR but just a message.
+
+This brought me back the memory of using a second hand official cable to load games onto the 83+ 16 years ago. And I'm still using the same calculater for basic calculation today.
+
+Very happy to see you combined ch55xduino and 83+. Good job!
+
+
 # CH55xGrayLink
 A sketch for CH551/CH552 based Arduinos (using [Ch55xduino](https://github.com/DeqingSun/ch55xduino)) that makes it possible to connect a Texas Instruments calculator to a computer using USB.
 
